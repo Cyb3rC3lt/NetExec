@@ -25,6 +25,7 @@ class NXCModule:
         TEXT: Specify the TEXT option to enter your text to search for
         Usage: nxc ldap $DC-IP -u Username -p Password -M find-computer -o TEXT="server"
                nxc ldap $DC-IP -u Username -p Password -M find-computer -o TEXT="SQL"
+               nxc ldap $DC-IP -u Username -p Password -M find-computer -o TEXT="."
         """
         self.TEXT = ""
 
@@ -35,7 +36,7 @@ class NXCModule:
             sys.exit(1)
 
     def on_login(self, context, connection):
-        search_filter = f"(&(objectCategory=computer)(|(operatingSystem=*{self.TEXT}*)(name=*{self.TEXT}*)))"
+        search_filter = f"(&(objectCategory=computer)(|(operatingSystem=*{self.TEXT}*)(dNSHostName=*{self.TEXT}*)))"
 
         try:
             context.log.debug(f"Search Filter={search_filter}")
